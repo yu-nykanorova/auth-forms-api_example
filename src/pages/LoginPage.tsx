@@ -1,18 +1,11 @@
-import {useEffect} from "react";
-import {login} from "../services/api.service.ts";
+import {LoginForm} from "../components/forms/LoginForm.tsx";
 
 export const LoginPage = () => {
-    useEffect(() => {
-        login({
-           username: "emilys",
-           password: "emilyspass",
-           expiresInMins: 1,
-        });
-    }, []);
+
 
     return (
-        <>
-            <h1 className="my-8 text-[30px] text-center text-pink-800">You have successfully logged in</h1>
-        </>
+        <div className="max-w-100 mx-auto pt-14 px-10 pb-10 flex items-center justify-center">
+            <LoginForm/>
+        </div>
     );
 };

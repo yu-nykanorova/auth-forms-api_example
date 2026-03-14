@@ -5,6 +5,7 @@ import {LoginPage} from "../pages/LoginPage.tsx";
 import {ProductsPage} from "../pages/ProductsPage.tsx";
 import {SignupPage} from "../pages/SignupPage.tsx";
 import {ProfilePage} from "../pages/ProfilePage.tsx";
+import {AuthMenu} from "../components/menu/AuthMenu.tsx";
 
 export const routes = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ export const routes = createBrowserRouter([
                 path: "",
                 element: <HomePage/>,
                 children: [
+                    {
+                        index: true,
+                        element: <AuthMenu/>
+                    },
                     {
                         path: "login",
                         element: <LoginPage/>

@@ -1,7 +1,9 @@
-import {AuthMenu} from "../components/menu/AuthMenu.tsx";
+import {Outlet} from "react-router-dom";
 
 export const HomePage = () => {
     return (
-        <AuthMenu/>
+        <>
+            <Outlet/>
+        </>
     );
 };
