@@ -3,13 +3,19 @@ import type {IUserSignupData} from "../../models/IUserData.ts";
 import {joiResolver} from "@hookform/resolvers/joi";
 import {signupValidator} from "../../validators/signup.validator.ts";
 import {signup} from "../../services/api.service.ts";
-import type {FC} from "react";
+import {useNavigate} from "react-router-dom";
 
-type FormProps = {
-    onSignup: () => void;
-};
+export const SignupForm = () => {
+    const navigate = useNavigate();
 
-export const SignupForm: FC<FormProps> = ({onSignup}) => {
+    const navigateToLoginPage = () => {
+        navigate("/login", {
+            replace: true,
+            state: {
+                message: "Registration successful!"
+            }
+        });
+    };
 
     const {
         handleSubmit,
@@ -26,7 +32,7 @@ export const SignupForm: FC<FormProps> = ({onSignup}) => {
             await signup(formValues);
             console.log("User registered successfully");
             reset();
-            onSignup();
+            navigateToLoginPage();
         } catch (error) {
             console.log("Signup error is", error);
         }

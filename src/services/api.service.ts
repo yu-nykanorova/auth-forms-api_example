@@ -12,13 +12,17 @@ export const axiosPrivate = axios.create({
     baseURL: BASE_URL,
 });
 
-// axiosPrivate.interceptors.request.use((requestObject) => {
-//     if(requestObject.method?.toUpperCase() === "GET") {
-//
-//         requestObject.headers.Authorization = `Bearer ${retrieveLocalStorage<IUserWithTokens>("user").accessToken}`;
-//     }
-//     return requestObject;
-// })
+axiosPrivate.interceptors.request.use((requestObject) => {
+    if(requestObject.method?.toUpperCase() === "GET") {
+        const tokensObject = localStorage.getItem("token") || "";
+
+        if (tokensObject) {
+            const accessToken = JSON.parse(tokensObject).access_token;
+            requestObject.headers.Authorization = `Bearer ${accessToken}`;
+        }
+    }
+    return requestObject;
+})
 
 export const login = async (user: IUserLoginData): Promise<ITokenPair> => {
     const {data} = await axiosPublic.post("/auth/login", user);
@@ -32,6 +36,12 @@ export const signup = async (user: IUserSignupData): Promise<IUserCreated> => {
     console.log(data);
     return data;
 };
+
+export const loadProfile = async (): Promise<IUserCreated> => {
+    const {data} = await axiosPrivate.get("/auth/profile", {});
+    console.log(data);
+    return data;
+}
 
 // export const refresh = async () => {
 //     const userWithTokens = retrieveLocalStorage<IUserWithTokens>("user");
@@ -48,6 +58,3 @@ export const signup = async (user: IUserSignupData): Promise<IUserCreated> => {
 //     return data;
 // }
 //
-// export const loadProfile = async <>(): Promise<> => {
-//
-// }
