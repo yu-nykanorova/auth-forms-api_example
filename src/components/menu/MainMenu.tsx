@@ -8,6 +8,7 @@ export const MainMenu = () => {
         <div className="w-screen fixed bg-slate-800 shadow-lg z-10">
             <ul className="max-w-300 mx-auto p-4 flex justify-evenly items-center gap-6">
                 <li><NavLink to={"/"} className={menuItemClass}>Home</NavLink></li>
+                <li><NavLink to={"/login"} className={menuItemClass}>Login</NavLink></li>
                 <li><NavLink to={"/profile"} className={menuItemClass}>Profile</NavLink></li>
                 <li><NavLink to={"/products"} className={menuItemClass}>Products</NavLink></li>
             </ul>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {retrieveLocalStorage} from "./helpers.ts";
-import type {IUserLoginData} from "../models/IUserLoginData.ts";
+import type {IUserCreated, IUserLoginData, IUserSignupData} from "../models/IUserData.ts";
 import type {ITokenPair} from "../models/ITokenPair.ts";
 
 const BASE_URL = "https://api.escuelajs.co/api/v1";
@@ -24,6 +24,12 @@ export const login = async (user: IUserLoginData): Promise<ITokenPair> => {
     const {data} = await axiosPublic.post("/auth/login", user);
     console.log(data);
     localStorage.setItem("token", JSON.stringify(data));
+    return data;
+};
+
+export const signup = async (user: IUserSignupData): Promise<IUserCreated> => {
+    const {data} = await axiosPublic.post("/users", user);
+    console.log(data);
     return data;
 };
 
