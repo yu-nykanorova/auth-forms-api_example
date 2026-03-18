@@ -8,6 +8,7 @@ export const LoginPage = () => {
 
     const logoutHandler = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setLoggedIn(false);
     };
 
@@ -16,7 +17,7 @@ export const LoginPage = () => {
             {
                 loggedIn ?
                     <div className="max-w-300">
-                        <p className="mb-8 text-center text-[26px] text-amber-600">Authorization successful!</p>
+                        <p className="mb-8 text-center text-[26px] text-amber-600">You are already logged in</p>
                         <div className="flex flex-col justify-center items-center gap-6 text-center text-[20px]">
                             <Link to={"/profile"} className="decoration-solid decoration-blue-600 transition-all duration-100 hover:text-blue-600 hover:underline">
                                 Show profile
@@ -28,7 +29,7 @@ export const LoginPage = () => {
                     </div>
                     :
                     <>
-                        <p>{location.state?.message}</p>
+                        <p className="w-100 mx-auto mb-6 text-center text-[20px] text-amber-600">{location.state?.message}</p>
                         <LoginForm onLogin={() => setLoggedIn(true)}/>
                     </>
 

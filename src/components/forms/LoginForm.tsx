@@ -1,9 +1,9 @@
 import {useForm} from "react-hook-form";
 import {joiResolver} from "@hookform/resolvers/joi";
 import {loginValidator} from "../../validators/login.validator.ts";
-import type {IUserLoginData} from "../../models/IUserData.ts";
 import {login} from "../../services/api.service.ts";
 import type {FC} from "react";
+import type {IUserLoginData} from "../../models/IAuth.ts";
 
 type FormProps = {
     onLogin: () => void;

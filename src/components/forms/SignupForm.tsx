@@ -1,21 +1,12 @@
 import {useForm} from "react-hook-form";
-import type {IUserSignupData} from "../../models/IUserData.ts";
 import {joiResolver} from "@hookform/resolvers/joi";
 import {signupValidator} from "../../validators/signup.validator.ts";
 import {signup} from "../../services/api.service.ts";
 import {useNavigate} from "react-router-dom";
+import type {IUserSignupData} from "../../models/IAuth.ts";
 
 export const SignupForm = () => {
     const navigate = useNavigate();
-
-    const navigateToLoginPage = () => {
-        navigate("/login", {
-            replace: true,
-            state: {
-                message: "Registration successful!"
-            }
-        });
-    };
 
     const {
         handleSubmit,
@@ -26,6 +17,15 @@ export const SignupForm = () => {
         mode: "all",
         resolver: joiResolver(signupValidator)
     });
+
+    const navigateToLoginPage = () => {
+        navigate("/login", {
+            replace: true,
+            state: {
+                message: "Registration successful! Now you can log in"
+            }
+        });
+    };
 
      const signupHandler = async (formValues: IUserSignupData) => {
         try {

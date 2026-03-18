@@ -1,7 +1,9 @@
 import axios from "axios";
-import {retrieveLocalStorage} from "./helpers.ts";
-import type {IUserCreated, IUserLoginData, IUserSignupData} from "../models/IUserData.ts";
+import {putToLocalStorage, retrieveLocalStorage} from "./helpers.ts";
 import type {ITokenPair} from "../models/ITokenPair.ts";
+import type {IUser} from "../models/IUser.ts";
+import type {IUserLoginData, IUserSignupData} from "../models/IAuth.ts";
+import type {IProduct} from "../models/IProduct.ts";
 
 const BASE_URL = "https://api.escuelajs.co/api/v1";
 
@@ -14,10 +16,10 @@ export const axiosPrivate = axios.create({
 
 axiosPrivate.interceptors.request.use((requestObject) => {
     if(requestObject.method?.toUpperCase() === "GET") {
-        const tokensObject = localStorage.getItem("token") || "";
+        const storedTokens = retrieveLocalStorage<ITokenPair>("token") || "";
 
-        if (tokensObject) {
-            const accessToken = JSON.parse(tokensObject).access_token;
+        if (storedTokens) {
+            const accessToken = storedTokens.access_token;
             requestObject.headers.Authorization = `Bearer ${accessToken}`;
         }
     }
@@ -27,34 +29,30 @@ axiosPrivate.interceptors.request.use((requestObject) => {
 export const login = async (user: IUserLoginData): Promise<ITokenPair> => {
     const {data} = await axiosPublic.post("/auth/login", user);
     console.log(data);
-    localStorage.setItem("token", JSON.stringify(data));
+    putToLocalStorage<ITokenPair>("token", data);
     return data;
 };
 
-export const signup = async (user: IUserSignupData): Promise<IUserCreated> => {
+export const signup = async (user: IUserSignupData): Promise<void> => {
     const {data} = await axiosPublic.post("/users", user);
     console.log(data);
-    return data;
 };
 
-export const loadProfile = async (): Promise<IUserCreated> => {
+export const loadProfile = async (): Promise<IUser> => {
     const {data} = await axiosPrivate.get("/auth/profile", {});
-    console.log(data);
+    putToLocalStorage<IUser>("user", data)
     return data;
 }
 
-// export const refresh = async () => {
-//     const userWithTokens = retrieveLocalStorage<IUserWithTokens>("user");
-//     const {data: {accessToken, refreshToken}} = await axiosInstance.post<ITokenPair>("/refresh", {refreshToken: userWithTokens.refreshToken, expiresInMins: 1});
-//     console.log(accessToken, refreshToken);
-//     userWithTokens.accessToken = accessToken;
-//     userWithTokens.refreshToken = refreshToken;
-//     localStorage.setItem("user", JSON.stringify(userWithTokens));
-// }
+export const refresh = async () => {
+    const tokens = retrieveLocalStorage<ITokenPair>("token");
+    const {data} = await axiosPublic.post<ITokenPair>("/auth/refresh-token", {refreshToken: tokens.refresh_token});
+    console.log(data);
+    putToLocalStorage("token", data);
+}
 
+export const loadProducts = async (): Promise<IProduct[]> => {
+    const {data} = await axiosPublic.get("/products", {});
+    return data;
+}
 
-// export const loadProducts = async <T>(url: string): Promise<T> => {
-//     const {data} = await axiosInstance.get(url, {});
-//     return data;
-// }
-//
