@@ -7,17 +7,36 @@ type ProductProps = {
 
 export const ProductItem: FC<ProductProps> = ({product}) => {
     return (
-        <li className="py-6 bg-white shadow=sm rounded-md">
-            <p className="px-6 py-2 text-[20px] text-right font-semibold bg-pink-100">ID: {product.id}</p>
-            <div className="px-6">
-                <div className="flex items-center justify-center">
-                    <img className="max-w-50" src={product.thumbnail} alt={product.title}/>
+        <li className="pb-6 grid grid-rows-[auto_1fr] bg-white shadow-sm rounded-md">
+            <p className="px-6 py-2 text-[20px] text-right font-semibold bg-yellow-200">ID: {product.id}</p>
+            <div className="h-full px-6 flex flex-col">
+                <div className="w-full h-100 flex items-center justify-center">
+                    <img className="w-full h-full object-cover" src={product.images[0]} alt={product.title}/>
                 </div>
-                <div>
-                    <h2 className="mb-2 text-[26px]">{product.title}</h2>
+
+                <div className="flex flex-col gap-2 flex-1">
+                    <h2 className="mb-2 text-[26px] text-amber-600">
+                        {product.title}
+                    </h2>
                     <p>{product.description}</p>
-                    <p>{product.category}</p>
-                    <p className="mt-2 text-[20px] font-semibold">Price: <span className="text-pink-800">{product.price}</span></p>
+                    <p>{product.slug}</p>
+
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-[20px]">
+                                Category {product.category.id}: <span className="text-amber-600 font-semibold">{product.category.name}</span>
+                            </p>
+                        </div>
+                        <img
+                            src={product.category.image}
+                            alt={product.category.name}
+                            className="max-w-10"
+                        />
+                    </div>
+
+                    <p className="mt-auto text-[20px] font-semibold">
+                        Price: <span className="text-pink-800">{product.price}</span>
+                    </p>
                 </div>
             </div>
         </li>
