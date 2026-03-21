@@ -12,6 +12,7 @@ export const SignupForm = () => {
         handleSubmit,
         register,
         reset,
+        clearErrors,
         formState: {errors, isValid, isSubmitting},
     } = useForm<IUserSignupData>({
         mode: "all",
@@ -29,6 +30,7 @@ export const SignupForm = () => {
 
      const signupHandler = async (formValues: IUserSignupData) => {
         try {
+            clearErrors("email");
             await signup(formValues);
             console.log("User registered successfully");
             reset();

@@ -2,14 +2,16 @@ import {useForm} from "react-hook-form";
 import {joiResolver} from "@hookform/resolvers/joi";
 import {loginValidator} from "../../validators/login.validator.ts";
 import {login} from "../../services/api.service.ts";
-import type {FC} from "react";
+import {type FC, useState} from "react";
 import type {IUserLoginData} from "../../models/IAuth.ts";
+import {Link} from "react-router-dom";
 
 type FormProps = {
     onLogin: () => void;
 };
 
 export const LoginForm: FC<FormProps> = ({onLogin}) => {
+    const [loginError, setLoginError] = useState<boolean>(false);
 
     const {
         handleSubmit,
@@ -29,6 +31,7 @@ export const LoginForm: FC<FormProps> = ({onLogin}) => {
             onLogin();
         } catch (error) {
             console.log("Login error is", error);
+            setLoginError(true);
         }
     };
 
@@ -51,6 +54,15 @@ export const LoginForm: FC<FormProps> = ({onLogin}) => {
                     }
                 </button>
             </form>
+            {
+                loginError && (
+                    <div>
+                        <p className="mt-2 mb-1 text-red-600 text-[18px]">Invalid login data</p>
+                        <p className="mr-2 inline-block">Don't have an account?</p>
+                        <Link to={"/signup"} className="text-blue-700 underline decoration-blue-700 hover:decoration-2">Register here</Link>
+                    </div>
+                )
+            }
         </div>
     );
 };

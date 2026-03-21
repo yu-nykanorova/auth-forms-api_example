@@ -4,6 +4,7 @@ import type {ITokenPair} from "../models/ITokenPair.ts";
 import type {IUser} from "../models/IUser.ts";
 import type {IUserLoginData, IUserSignupData} from "../models/IAuth.ts";
 import type {IProduct} from "../models/IProduct.ts";
+import type {EmailCheckResponse} from "../models/EmailCheckResponse.ts";
 
 const BASE_URL = "https://api.escuelajs.co/api/v1";
 
@@ -37,6 +38,12 @@ export const signup = async (user: IUserSignupData): Promise<void> => {
     const {data} = await axiosPublic.post("/users", user);
     console.log(data);
 };
+
+export const validateEmail = async (value: string): Promise<EmailCheckResponse> => {
+    const {data} = await axiosPublic.post("/users/is-available", {email: value});
+    console.log(data);
+    return data.isAvailable;
+}
 
 export const loadProfile = async (): Promise<IUser> => {
     const {data} = await axiosPrivate.get("/auth/profile", {});
